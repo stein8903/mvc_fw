@@ -2,10 +2,15 @@
 
 namespace App\Controllers;
 
+use Core\View;
+
 class Home
 {
     public function index()
     {
-        echo "hello from Home controller index action.";
+        View::renderTemplate('home.html', [
+            'name'    => 'Dave',
+            'colours' => ['red', 'green', 'blue']
+        ]);
     }
 }
