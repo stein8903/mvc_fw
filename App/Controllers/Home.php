@@ -3,14 +3,14 @@
 namespace App\Controllers;
 
 use Core\View;
+use App\Models\Shop;
 
 class Home
 {
     public function index()
     {
-        View::renderTemplate('home.html', [
-            'name'    => 'Dave',
-            'colours' => ['red', 'green', 'blue']
-        ]);
+        $shops = Shop::getAll();
+
+        View::renderTemplate('home.html', ['shops' => $shops]);
     }
 }
