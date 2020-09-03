@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>some title</title>
+    <link rel="stylesheet" href="{{ publicUrl }}/css/app.css">
+    <script src="{{ publicUrl }}/js/app.js"></script>
+</head>
+<body>
+    <header>
+        {{ include('layouts/nav.html') }}
+    </header>
+
+    <div class="container">
+        {% block content %}
+        {% endblock %}
+    </div>
+</body>
+</html>

@@ -22,6 +22,11 @@ class View
         $loader = new \Twig\Loader\FilesystemLoader('../App/Views');
         $twig = new \Twig\Environment($loader);
         
+        $domainUrl = (empty($_SERVER['HTTPS']) ? 'http://' : 'https://') . $_SERVER['HTTP_HOST'];
+        $twig->addGlobal('domainUrl', $domainUrl);
+        $publicUrl = $domainUrl . dirname($_SERVER['SCRIPT_NAME']);
+        $twig->addGlobal('publicUrl', $publicUrl);
+        
         echo $twig->render($template, $args);
     }
 }

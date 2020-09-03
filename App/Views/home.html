@@ -1,17 +1,10 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>Home</title>
-</head>
-<body>
-    <h1>Welcome</h1>
-    <!-- <p>Hello from a Twig template, {{ name }}!</p> -->
+{% extends "layouts/app.html" %}
 
+{% block content %}
+    <h1>Welcome</h1>
     <ul>
         {% for shop in shops %}
             <li>{{ shop.shop_name }}</li>
         {% endfor %}
     </ul>
-</body>
-</html>
+{% endblock %}
