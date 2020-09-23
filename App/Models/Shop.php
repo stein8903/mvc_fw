@@ -10,7 +10,7 @@ class Shop extends \Core\Model
     {
         try {
             $db = static::getDB();
-            $stmt = $db->query('SELECT * FROM shop');
+            $stmt = $db->query('SELECT * FROM shops');
             $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
             return $results;

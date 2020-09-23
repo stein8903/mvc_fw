@@ -3,7 +3,7 @@
 namespace Core;
 
 use PDO;
-use App\Config;
+use Dotenv\Dotenv;
 
 abstract class Model
 {
@@ -11,9 +11,12 @@ abstract class Model
     {
         static $db = null;
         if ($db === null) {
-            $dsn = 'mysql:dbname=' . Config::DB_NAME . ';host=' . Config::DB_HOST;
-            $user = Config::DB_USER;
-            $pass = Config::DB_PASSWORD;
+            $dotenv = Dotenv::createMutable(dirname(__DIR__));
+            $dotenv->load();
+
+            $dsn = 'mysql:dbname=' . $_ENV['DB_NAME'] . ';host=' . $_ENV['DB_HOST'];
+            $user = $_ENV['DB_USER'];
+            $pass = $_ENV['DB_PASSWORD'];
             try {
                 $db = new PDO($dsn, $user, $pass);
             } catch (PDOException $e) {
