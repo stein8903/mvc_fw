@@ -1,6 +1,7 @@
 <?php
-
 namespace Core;
+
+use ReflectionMethod;
 
 class Router
 {
@@ -27,7 +28,7 @@ class Router
     /**
      * 
      */
-    public function getRouters()
+    public function getRouters(): array
     {
         return $this->routers;
     }
@@ -35,7 +36,7 @@ class Router
     /**
      * 
      */
-    public function match($url)
+    public function match(string $url)
     {
         foreach ($this->routers as $router => $param) {
             if (preg_match($router, $url, $matches)) {
@@ -55,7 +56,7 @@ class Router
     /**
      * 
      */
-    public function getParams()
+    public function getParams(): array
     {
         return $this->params;
     }
@@ -63,7 +64,7 @@ class Router
     /**
      * 
      */
-    public function dispatch($url)
+    public function dispatch(string $url)
     {
         if ($this->match($url)) {
             $controller = $this->params['controller'];
@@ -74,7 +75,9 @@ class Router
                 $action = $this->_convertToCamelCase($this->params['action']);
                 $controllerObject = new $controller();
                 if (is_callable([$controllerObject, $action])) {
-                    $controllerObject->$action();
+                    // $controllerObject->$action();
+                    $paramObjects = $this->_getParamObjects($controller, $action);
+                    call_user_func_array([$controllerObject, $action], $paramObjects);
                 } else {
                     echo "action name {$action} doesn't exists";
                 }
@@ -89,7 +92,7 @@ class Router
     /**
      * 
      */
-    private function _convertToStudlyCap($string)
+    private function _convertToStudlyCap(string $string)
     {
         return str_replace(' ', '', ucwords(str_replace('-', ' ', $string)));
     }
@@ -97,8 +100,25 @@ class Router
     /**
      * 
      */
-    private function _convertToCamelCase($string)
+    private function _convertToCamelCase(string $string)
     {
         return $this->_convertToStudlyCap(lcfirst($string));
+    }
+
+    /**
+     * 
+     * 
+     */
+    private function _getParamObjects($class, $method)
+    {
+        $paramObjects = [];
+        $methodReflection = new ReflectionMethod($class, $method);
+        $reflectionParams = $methodReflection->getParameters();
+        foreach ($reflectionParams as $param) {
+            $paramName = $param->getType()->getName();
+            $paramObjects[] = new $paramName();
+        }
+
+        return $paramObjects;
     }
 }
