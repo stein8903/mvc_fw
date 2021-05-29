@@ -12,7 +12,7 @@ class Router
     /**
      * 
      */
-    public function add($route, $param = [])
+    public function add($route, $param = []): void
     {
         $route = preg_replace('/\//', '\/', $route);
         
@@ -36,7 +36,7 @@ class Router
     /**
      * 
      */
-    public function match(string $url)
+    public function match(string $url): bool
     {
         foreach ($this->routers as $router => $param) {
             if (preg_match($router, $url, $matches)) {
@@ -92,7 +92,7 @@ class Router
     /**
      * 
      */
-    private function _convertToStudlyCap(string $string)
+    private function _convertToStudlyCap(string $string): string
     {
         return str_replace(' ', '', ucwords(str_replace('-', ' ', $string)));
     }
@@ -100,7 +100,7 @@ class Router
     /**
      * 
      */
-    private function _convertToCamelCase(string $string)
+    private function _convertToCamelCase(string $string): string
     {
         return $this->_convertToStudlyCap(lcfirst($string));
     }
@@ -109,7 +109,7 @@ class Router
      * 
      * 
      */
-    private function _getParamObjects($class, $method)
+    private function _getParamObjects($class, $method): array
     {
         $paramObjects = [];
         $methodReflection = new ReflectionMethod($class, $method);
